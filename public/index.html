@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        input {
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #58d9f0;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #bbe2fc;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Alex Data Search</h1>
+    <input type="text" id="searchInput" placeholder="Enter name to search..." oninput="searchEmployees()">
+    <table id="resultsTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>FIN Code</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Search results will be appended here -->
+        </tbody>
+    </table>
+
+    <script>
+        async function searchEmployees() {
+            const searchInput = document.getElementById('searchInput').value;
+            const resultsTable = document.getElementById('resultsTable').querySelector('tbody');
+
+            // Temizleme
+            resultsTable.innerHTML = '';
+
+            if (searchInput.trim() === '') {
+                return; // Eğer arama kutusu boşsa hiçbir işlem yapma
+            }
+
+            try {
+                const response = await fetch(`/employees?name=${searchInput}`);
+                if (!response.ok) {
+                    throw new Error('Sunucudan bir hata döndü');
+                }
+
+                const employees = await response.json();
+
+                // Gelen verileri tabloya ekle
+                employees.forEach(employee => {
+                    const row = `
+                        <tr>
+                            <td>${employee.id}</td>
+                            <td>${employee.first_name}</td>
+                            <td>${employee.last_name}</td>
+                            <td>${employee.email}</td>
+                            <td>${employee.phone}</td>
+                            <td>${employee.fin_code}</td>
+                        </tr>
+                    `;
+                    resultsTable.innerHTML += row;
+                });
+            } catch (error) {
+                console.error('Hata:', error.message);
+            }
+        }
+    </script>
+</body>
+
+</html>

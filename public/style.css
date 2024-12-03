@@ -1,0 +1,18 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+  }
+  #results {
+    margin-top: 20px;
+    border: 1px solid #fd0000;
+    padding: 10px;
+  }
+  .employee {
+    border-bottom: 1px solid #940707;
+    padding: 10px;
+  }
+  .employee:last-child {
+    border-bottom: none;
+  }
+  
